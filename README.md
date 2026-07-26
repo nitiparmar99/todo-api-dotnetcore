@@ -1,35 +1,81 @@
 # todo-api-dotnetcore
 
-Small ASP.NET Core Web API for a TODO list (in-memory store).
+An ASP.NET Core Web API for managing a TODO list. This project uses an in-memory data store, so no database setup is required.
 
-Prerequisites
-- .NET 10 SDK. Verify with `dotnet --version`.
+## Prerequisites
 
-Run
+Before running the application, make sure you have:
 
-1. From the `todo-api-dotnetcore` folder:
+* .NET 10 SDK installed
+* Verify the installation by running:
+
+```bash
+dotnet --version
+```
+
+## Running the Application
+
+From the project directory, run:
 
 ```bash
 cd todo-api-dotnetcore
- dotnet restore
- dotnet run --project todo-api-dotnetcore.csproj
+dotnet restore
+dotnet run
 ```
 
-The app listens on `http://localhost:5000`.
+Once the application starts, it will be available at:
 
-Run order
-- Start this backend first.
-- Then run the Angular frontend from `../todo-api-angular` so it can call `http://localhost:5000/api`.
+```
+http://localhost:5000
+```
 
-By default the app will bind to the URLs Kestrel chooses; when running locally you should see an HTTP URL in the output. The Angular app expects CORS from `http://localhost:4200`.
+> **Note:** The port may vary depending on your local environment. Check the console output if a different URL is assigned.
 
-API
-- GET `/api/todos` — list all todos
-- POST `/api/todos` — create a todo (JSON body: `{ "title": "...", "description": "..." }`)
-- GET `/api/todos/{id}` — get a single todo
-- DELETE `/api/todos/{id}` — delete
-- POST `/api/todos/{id}/toggle` — toggle complete
+## Running with the Angular Frontend
 
-Notes
-- Data is stored in-memory in a thread-safe dictionary; restarting the app clears data.
-- Unit tests live in `TodoApi.Tests` (xUnit). Run with `dotnet test` from the solution or tests folder.
+If you're using the accompanying Angular application:
+
+1. Start this API first.
+2. Then run the Angular project located in `../todo-api-angular`.
+
+The frontend is configured to call:
+
+```
+http://localhost:5000/api
+```
+
+CORS is enabled for the default Angular development server (`http://localhost:4200`).
+
+## API Endpoints
+
+| Method | Endpoint                 | Description                             |
+| ------ | ------------------------ | --------------------------------------- |
+| GET    | `/api/todos`             | Retrieve all TODO items                 |
+| GET    | `/api/todos/{id}`        | Retrieve a TODO item by ID              |
+| POST   | `/api/todos`             | Create a new TODO item                  |
+| POST   | `/api/todos/{id}/toggle` | Mark a TODO item as complete/incomplete |
+| DELETE | `/api/todos/{id}`        | Delete a TODO item                      |
+
+### Sample Request
+
+```json
+{
+  "title": "Buy groceries",
+  "description": "Milk, eggs and bread"
+}
+```
+
+## Testing
+
+Unit tests are available in the `TodoApi.Tests` project.
+
+Run all tests using:
+
+```bash
+dotnet test
+```
+
+## Notes
+
+* The application stores data in memory using a thread-safe dictionary.
+* Since there is no persistent storage, all TODO items are lost when the application is stopped or restarted.
